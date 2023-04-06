@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: pysql
+  name: pysql
+  namespace: testfinal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pysql
+      role: frontend
+  template:
+    metadata:
+      labels:
+        app: pysql
+        role: frontend
+    spec:
+      containers:
+      - image: oassaghir/psql-python:latest
+        env:
+          - name: DB_HOST
+            value: postgres.testfinal.svc.cluster.local
+          - name: DB_PORT
+            value: "5432"
+          - name: DB_NAME
+            value: "postgres"
+          - name: DB_USERNAME
+            value: "postgres"
+          - name: DB_PASSWORD
+            value: "testfinal"
+        name: pysql
+        ports:
+        - containerPort: 8080
+          name: pysql
+        resources:
+           limits:
+             cpu: 200m  ## 20% of the 1 core cpu = 1000 milli cpu on the vm

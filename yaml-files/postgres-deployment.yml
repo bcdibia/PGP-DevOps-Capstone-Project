@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: db
+    role: backend
+  name: postgres
+  namespace: testfinal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+      role: backend
+  template:
+    metadata:
+      labels:
+        app: db
+        role: backend
+    spec:
+      containers:
+      - image: postgres:13.1-alpine
+        name: postgres
+        env:
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          value: testfinal
+        ports:
+        - containerPort: 5432
+          name: postgres
