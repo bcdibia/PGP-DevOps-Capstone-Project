@@ -1,0 +1,61 @@
+source "amazon-ebs" "ubuntu" {
+
+  region =  "us-east-1"
+
+  source_ami =  "ami-0557a15b87f6559cf"
+
+  instance_type =  "t3.micro"
+
+  ssh_username =  "ubuntu"
+
+  ami_name =  "k8s-node1"
+
+}
+
+
+
+build {
+
+  sources = [
+
+    "source.amazon-ebs.ubuntu"
+
+  ]
+ 
+  provisioner "shell" {
+
+    inline = [
+
+       "sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installDocker.sh -P /tmp",
+
+       "sudo chmod 755 /tmp/installDocker.sh",
+
+       "sudo bash /tmp/installDocker.sh",
+
+       "sudo systemctl restart docker.service",
+
+       "sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installCRIDockerd.sh -P /tmp",
+
+       "sudo chmod 755 /tmp/installCRIDockerd.sh",
+
+       "sudo bash /tmp/installCRIDockerd.sh",
+
+       "sudo systemctl restart cri-docker.service",
+
+       "sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installK8S.sh -P /tmp",
+
+       "sudo chmod 755 /tmp/installK8S.sh",
+
+       "sudo bash /tmp/installK8S.sh"
+
+      ]
+
+    }
+
+
+
+
+  }
+
+
+
