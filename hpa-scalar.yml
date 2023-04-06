@@ -1,0 +1,14 @@
+---
+kind: HorizontalPodAutoscaler
+apiVersion: autoscaling/v1
+metadata:
+  name: pysql-hpa
+  namespace: testfinal
+spec:
+  targetCPUUtilizationPercentage: 50
+  minReplicas: 1
+  maxReplicas: 20
+  scaleTargetRef:
+    name: pysql
+    kind: Deployment
+    apiVersion: apps/v1
